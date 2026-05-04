@@ -1,11 +1,17 @@
 {
-  "input": {
+  "health_endpoint": "/ping",
+  "predict_endpoint": "/infer",
+  "port": 9000,
+  "health_response": {
+    "status": "running",
+    "model": "models/best_model_LinearRegression.pkl",
+    "version": "1.0"
+  },
+  "test_input": {
     "severity_level": 2,
     "alerts_count": 18,
     "analyst_experience": 10,
     "is_automated": 0
   },
-  "prediction": 2.4897387288066435,
-  "model": "models/best_model_LinearRegression.pkl",
-  "version": "1.0"
+  "prediction": 25.763405499085337
 }

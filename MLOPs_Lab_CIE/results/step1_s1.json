@@ -1,30 +1,18 @@
 {
-  "models_trained": [
+  "experiment_name": "shieldops-resolution-hours",
+  "models": [
     {
-      "model_type": "LinearRegression",
-      "MAE": 0.1832513076085905,
-      "RMSE": 0.20166155716356957,
-      "run_id": "6fee78654c4a4db993a1d15a15e512d7"
+      "name": "LinearRegression",
+      "mae": 3.058013504064384,
+      "rmse": 3.6246807244016668
     },
     {
-      "model_type": "Ridge",
-      "alpha": 1.0,
-      "MAE": 0.21371156411813688,
-      "RMSE": 0.23137307201494678,
-      "run_id": "6ad8e48a5a054fd39503abba1e863869"
+      "name": "Ridge",
+      "mae": 3.3061334346598708,
+      "rmse": 4.07124068465675
     }
   ],
-  "best_model": {
-    "model_type": "LinearRegression",
-    "model_path": "models/best_model_LinearRegression.pkl",
-    "MAE": 0.1832513076085905,
-    "RMSE": 0.20166155716356957
-  },
-  "metrics": {
-    "training_data_mean_severity": 2.75,
-    "training_data_mean_alerts": 31.083333333333332,
-    "training_data_mean_experience": 9.916666666666666,
-    "test_size": 0.2,
-    "random_state": 42
-  }
+  "best_model": "LinearRegression",
+  "best_metric_name": "rmse",
+  "best_metric_value": 3.6246807244016668
 }

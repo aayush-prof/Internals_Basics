@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import numpy as np
 from pathlib import Path
 
 # Thresholds from training data
@@ -24,8 +25,9 @@ def load_predictions():
 def analyze_predictions(predictions):
     """Analyze predictions for data drift"""
     
-    # Extract input features
+    # Extract input features and predictions
     inputs = [p["input"] for p in predictions]
+    preds = [p["prediction"] for p in predictions]
     df = pd.DataFrame(inputs)
     
     # Calculate statistics
@@ -33,50 +35,46 @@ def analyze_predictions(predictions):
     mean_alerts = df["alerts_count"].mean()
     mean_experience = df["analyst_experience"].mean()
     mean_automated = df["is_automated"].mean()
+    mean_prediction = np.mean(preds)
     
-    # Training data statistics (from train.py)
-    train_mean_severity = 2.8  # Approximate from training data
-    train_mean_alerts = 33.5   # Approximate from training data
+    # Training data statistics (calculated from training_data.csv)
+    # severity_level mean: (5+2+2+5+2+4+5+5+4+3+1+1+5+2+4+4+1+5+3+5+4+3+5+1+2)/25 = 3.32
+    # alerts_count mean: (10+50+46+20+8+17+47+23+9+34+21+36+46+24+22+32+39+44+3+8+36+32+6+21+45)/25 = 27.16
+    train_mean_severity = 3.32
+    train_mean_alerts = 27.16
     
     # Detect drifts
     alerts = []
     
     # Severity drift detection
-    severity_diff = abs(mean_severity - train_mean_severity)
-    if severity_diff > SEVERITY_THRESHOLD:
+    severity_shift = abs(mean_severity - train_mean_severity)
+    if severity_shift > SEVERITY_THRESHOLD:
         alerts.append({
-            "type": "SEVERITY_DRIFT",
-            "current_mean": float(mean_severity),
+            "feature": "severity_level",
+            "train_mean": float(train_mean_severity),
+            "live_mean": float(mean_severity),
+            "shift": float(severity_shift),
             "threshold": SEVERITY_THRESHOLD,
-            "diff": float(severity_diff),
             "status": "ALERT"
         })
     
     # Alerts count drift detection
-    alerts_diff = abs(mean_alerts - train_mean_alerts)
-    if alerts_diff > ALERTS_THRESHOLD:
+    alerts_shift = abs(mean_alerts - train_mean_alerts)
+    if alerts_shift > ALERTS_THRESHOLD:
         alerts.append({
-            "type": "ALERTS_DRIFT",
-            "current_mean": float(mean_alerts),
+            "feature": "alerts_count",
+            "train_mean": float(train_mean_alerts),
+            "live_mean": float(mean_alerts),
+            "shift": float(alerts_shift),
             "threshold": ALERTS_THRESHOLD,
-            "diff": float(alerts_diff),
             "status": "ALERT"
         })
     
     return {
         "total_predictions": len(predictions),
-        "statistics": {
-            "mean_severity_level": float(mean_severity),
-            "mean_alerts_count": float(mean_alerts),
-            "mean_analyst_experience": float(mean_experience),
-            "mean_is_automated": float(mean_automated)
-        },
-        "drift_detection": {
-            "severity_threshold": SEVERITY_THRESHOLD,
-            "alerts_threshold": ALERTS_THRESHOLD,
-            "alerts": alerts,
-            "drift_detected": len(alerts) > 0
-        }
+        "mean_prediction": float(mean_prediction),
+        "drift_detected": len(alerts) > 0,
+        "alerts": alerts
     }
 
 if __name__ == "__main__":
@@ -91,23 +89,21 @@ if __name__ == "__main__":
         # Analyze
         results = analyze_predictions(predictions)
         
-        print("\nStatistics:")
-        print(f"  Mean Severity Level: {results['statistics']['mean_severity_level']:.2f}")
-        print(f"  Mean Alerts Count: {results['statistics']['mean_alerts_count']:.2f}")
-        print(f"  Mean Analyst Experience: {results['statistics']['mean_analyst_experience']:.2f}")
-        print(f"  Mean Is Automated: {results['statistics']['mean_is_automated']:.2f}")
+        print(f"\nTotal Predictions: {results['total_predictions']}")
+        print(f"Mean Prediction Value: {results['mean_prediction']:.2f}")
+        print(f"Drift Detected: {results['drift_detected']}")
         
-        print("\nDrift Detection:")
-        print(f"  Severity Threshold: {results['drift_detection']['severity_threshold']:.2f}")
-        print(f"  Alerts Threshold: {results['drift_detection']['alerts_threshold']:.2f}")
-        
-        if results['drift_detection']['drift_detected']:
-            print(f"\n  ⚠️  DATA DRIFT DETECTED:")
-            for alert in results['drift_detection']['alerts']:
-                print(f"     - {alert['type']}: Current={alert['current_mean']:.2f}, "
-                      f"Threshold={alert['threshold']:.2f}, Diff={alert['diff']:.2f}")
+        if results['drift_detected']:
+            print(f"\n⚠️  DATA DRIFT ALERTS:")
+            for alert in results['alerts']:
+                print(f"\n  Feature: {alert['feature']}")
+                print(f"    Training Mean: {alert['train_mean']:.2f}")
+                print(f"    Live Mean: {alert['live_mean']:.2f}")
+                print(f"    Shift: {alert['shift']:.2f}")
+                print(f"    Threshold: {alert['threshold']:.2f}")
+                print(f"    Status: {alert['status']}")
         else:
-            print("\n  ✓ No significant drift detected")
+            print("\n✓ No significant drift detected")
         
         # Save results
         Path("results").mkdir(exist_ok=True)

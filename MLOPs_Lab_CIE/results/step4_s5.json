@@ -1,23 +1,15 @@
 {
-  "total_predictions": 100,
-  "statistics": {
-    "mean_severity_level": 4.12,
-    "mean_alerts_count": 37.56,
-    "mean_analyst_experience": 9.44,
-    "mean_is_automated": 0.42
-  },
-  "drift_detection": {
-    "severity_threshold": 0.88,
-    "alerts_threshold": 12.71,
-    "alerts": [
-      {
-        "type": "SEVERITY_DRIFT",
-        "current_mean": 4.12,
-        "threshold": 0.88,
-        "diff": 1.3200000000000003,
-        "status": "ALERT"
-      }
-    ],
-    "drift_detected": true
-  }
+  "total_predictions": 50,
+  "mean_prediction": 20.317604228211447,
+  "drift_detected": true,
+  "alerts": [
+    {
+      "feature": "severity_level",
+      "train_mean": 3.32,
+      "live_mean": 4.5,
+      "shift": 1.1800000000000002,
+      "threshold": 0.88,
+      "status": "ALERT"
+    }
+  ]
 }

@@ -33,9 +33,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # Track models and results
 results = {
-    "models_trained": [],
-    "best_model": {},
-    "metrics": {}
+    "experiment_name": experiment_name,
+    "models": [],
+    "best_model": "",
+    "best_metric_name": "rmse",
+    "best_metric_value": 0.0
 }
 
 # Train LinearRegression
@@ -55,11 +57,10 @@ with mlflow.start_run(experiment_id=experiment_id):
     
     run_id_lr = mlflow.active_run().info.run_id
     
-    results["models_trained"].append({
-        "model_type": "LinearRegression",
-        "MAE": float(mae_lr),
-        "RMSE": float(rmse_lr),
-        "run_id": run_id_lr
+    results["models"].append({
+        "name": "LinearRegression",
+        "mae": float(mae_lr),
+        "rmse": float(rmse_lr)
     })
     
     print(f"LinearRegression - MAE: {mae_lr:.4f}, RMSE: {rmse_lr:.4f}")
@@ -82,12 +83,10 @@ with mlflow.start_run(experiment_id=experiment_id):
     
     run_id_ridge = mlflow.active_run().info.run_id
     
-    results["models_trained"].append({
-        "model_type": "Ridge",
-        "alpha": 1.0,
-        "MAE": float(mae_ridge),
-        "RMSE": float(rmse_ridge),
-        "run_id": run_id_ridge
+    results["models"].append({
+        "name": "Ridge",
+        "mae": float(mae_ridge),
+        "rmse": float(rmse_ridge)
     })
     
     print(f"Ridge - MAE: {mae_ridge:.4f}, RMSE: {rmse_ridge:.4f}")
@@ -109,21 +108,8 @@ Path("models").mkdir(exist_ok=True)
 model_path = f"models/best_model_{best_type}.pkl"
 joblib.dump(best_model, model_path)
 
-results["best_model"] = {
-    "model_type": best_type,
-    "model_path": model_path,
-    "MAE": float(best_mae),
-    "RMSE": float(best_rmse)
-}
-
-# Save training metrics for comparison
-results["metrics"] = {
-    "training_data_mean_severity": float(X_train["severity_level"].mean()),
-    "training_data_mean_alerts": float(X_train["alerts_count"].mean()),
-    "training_data_mean_experience": float(X_train["analyst_experience"].mean()),
-    "test_size": 0.2,
-    "random_state": 42
-}
+results["best_model"] = best_type
+results["best_metric_value"] = float(best_rmse)
 
 # Save results
 Path("results").mkdir(exist_ok=True)

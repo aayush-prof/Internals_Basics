@@ -31,14 +31,16 @@ def predict(severity_level, alerts_count, analyst_experience, is_automated):
         prediction = model.predict(input_data)[0]
         
         return {
-            "input": {
+            "image_name": "shieldops-predictor",
+            "image_tag": "v1",
+            "base_image": "python:3.11-slim",
+            "test_input": {
                 "severity_level": severity_level,
                 "alerts_count": alerts_count,
                 "analyst_experience": analyst_experience,
                 "is_automated": is_automated
             },
-            "prediction": float(prediction),
-            "model_path": model_path
+            "prediction": float(prediction)
         }
     except Exception as e:
         print(f"Error during prediction: {str(e)}", file=sys.stderr)
