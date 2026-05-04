@@ -1,0 +1,9 @@
+severity_level,alerts_count,analyst_experience,is_automated,resolution_hours
+2,18,10,0,2.5
+3,25,8,0,3.2
+1,5,15,1,0.8
+4,45,5,0,5.1
+2,20,12,1,1.5
+5,60,3,0,7.2
+1,8,18,1,0.5
+3,30,10,0,3.8

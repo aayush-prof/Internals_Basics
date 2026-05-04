@@ -1,0 +1,23 @@
+{
+  "total_predictions": 50,
+  "statistics": {
+    "mean_severity_level": 4.54,
+    "mean_alerts_count": 37.7,
+    "mean_analyst_experience": 9.98,
+    "mean_is_automated": 0.42
+  },
+  "drift_detection": {
+    "severity_threshold": 0.88,
+    "alerts_threshold": 12.71,
+    "alerts": [
+      {
+        "type": "SEVERITY_DRIFT",
+        "current_mean": 4.54,
+        "threshold": 0.88,
+        "diff": 1.7400000000000002,
+        "status": "ALERT"
+      }
+    ],
+    "drift_detected": true
+  }
+}

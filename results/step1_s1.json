@@ -1,0 +1,30 @@
+{
+  "models_trained": [
+    {
+      "model_type": "LinearRegression",
+      "MAE": 0.1832513076085905,
+      "RMSE": 0.20166155716356957,
+      "run_id": "35615781483f4c97912cbb2028dbfdc2"
+    },
+    {
+      "model_type": "Ridge",
+      "alpha": 1.0,
+      "MAE": 0.21371156411813688,
+      "RMSE": 0.23137307201494678,
+      "run_id": "61709a8d8fb34d54b2a819b89f49ae63"
+    }
+  ],
+  "best_model": {
+    "model_type": "LinearRegression",
+    "model_path": "models/best_model_LinearRegression.pkl",
+    "MAE": 0.1832513076085905,
+    "RMSE": 0.20166155716356957
+  },
+  "metrics": {
+    "training_data_mean_severity": 2.75,
+    "training_data_mean_alerts": 31.083333333333332,
+    "training_data_mean_experience": 9.916666666666666,
+    "test_size": 0.2,
+    "random_state": 42
+  }
+}

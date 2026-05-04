@@ -1,0 +1,10 @@
+{
+  "input": {
+    "severity_level": 2,
+    "alerts_count": 18,
+    "analyst_experience": 10,
+    "is_automated": 0
+  },
+  "prediction": 2.4897387288066435,
+  "model_path": "models\\best_model_LinearRegression.pkl"
+}
