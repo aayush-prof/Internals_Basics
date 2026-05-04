@@ -4,14 +4,14 @@
       "model_type": "LinearRegression",
       "MAE": 0.1832513076085905,
       "RMSE": 0.20166155716356957,
-      "run_id": "35615781483f4c97912cbb2028dbfdc2"
+      "run_id": "6fee78654c4a4db993a1d15a15e512d7"
     },
     {
       "model_type": "Ridge",
       "alpha": 1.0,
       "MAE": 0.21371156411813688,
       "RMSE": 0.23137307201494678,
-      "run_id": "61709a8d8fb34d54b2a819b89f49ae63"
+      "run_id": "6ad8e48a5a054fd39503abba1e863869"
     }
   ],
   "best_model": {
