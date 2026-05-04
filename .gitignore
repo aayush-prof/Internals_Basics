@@ -46,5 +46,9 @@ Thumbs.db
 logs/*.jsonl
 logs/*.log
 
+# Temporary files
+temp_cli_output.txt
+*.tmp
+
 # Model files (optional, usually want to track)
 # models/*.pkl
